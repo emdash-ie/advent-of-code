@@ -135,3 +135,29 @@ executable 5-2
       base,
       lens
   default-language: Haskell2010
+
+executable 6-1
+  main-is: 6-1.hs
+  other-modules:
+  ghc-options: -Wall -Werror
+               -Wincomplete-record-updates
+               -Wmissing-local-signatures
+               -Wredundant-constraints
+               -Wunused-packages
+               -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base
+  default-language: Haskell2010
+
+executable 6-2
+  main-is: 6-2.hs
+  other-modules:
+  ghc-options: -Wall -Werror
+               -Wincomplete-record-updates
+               -Wmissing-local-signatures
+               -Wredundant-constraints
+               -Wunused-packages
+               -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base
+  default-language: Haskell2010
