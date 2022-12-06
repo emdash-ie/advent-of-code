@@ -1,0 +1,31 @@
+Node One
+    (Node Zero
+        (Node One
+            (Node One
+                Empty
+                (Node Zero Leaf Empty))
+            (Node One
+                (Node Zero Leaf Empty)
+                (Node One Empty Leaf)))
+        (Node One
+            (Node One
+                Empty
+                (Node Zero Leaf Empty))
+            (Node One
+                Empty
+                (Node One Empty Leaf))))
+    (Node Zero
+        (Node One
+            (Node Zero
+                (Node Zero Leaf Empty)
+                Empty)
+            (Node One
+                (Node One Empty Leaf)
+                (Node One Leaf Leaf)))
+        (Node One
+            (Node Zero
+                (Node One Empty Leaf)
+                Empty)
+            (Node One
+                (Node Zero Leaf Empty)
+                (Node Zero Leaf Empty))))

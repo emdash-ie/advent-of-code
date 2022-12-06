@@ -1,0 +1,16 @@
+*.input
+*.sample
+dist-newstyle
+*.o
+*.hi
+input.txt
+part-1
+part-2
+main
+1-1
+1-2
+2-1
+2-2
+2-3
+3-1
+3-2
