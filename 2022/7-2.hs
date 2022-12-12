@@ -12,7 +12,7 @@ import Control.Lens hiding (children)
 import Data.Bifunctor (first)
 import Data.Foldable (toList)
 import Data.Generics.Product (field)
-import Data.List (foldl')
+import Data.List (foldl', sort)
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import Data.Maybe (fromMaybe)
@@ -24,8 +24,9 @@ main = interact $ \input -> let
   commands = readCommands (fmap words (lines input))
   tree = climb (buildDirectoryTree commands)
   annotatedTree = annotateSizes (tree ^. field @"current")
-  smallSizes = fmap fst (filter (\(n, _) -> n <= 100000) (toList annotatedTree))
-  in show (getSum (sum smallSizes))
+  target = 30000000 - (70000000 - (annotatedTree ^. field @"files" . _1))
+  bigEnough = sort (filter (>= target) (fmap fst (toList annotatedTree)))
+  in show (getSum (head bigEnough))
 
 readCommands :: [[String]] -> [Command]
 readCommands (["$", "cd", p ] : cs) = let

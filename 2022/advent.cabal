@@ -173,7 +173,22 @@ executable 7-1
   build-depends:
       base,
       containers,
-      data-fix,
+      generic-lens,
+      lens
+  default-language: Haskell2010
+
+
+executable 7-2
+  main-is: 7-2.hs
+  other-modules:
+  ghc-options: -Wall -Werror
+               -Wincomplete-record-updates
+               -Wredundant-constraints
+               -Wunused-packages
+               -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base,
+      containers,
       generic-lens,
       lens
   default-language: Haskell2010
