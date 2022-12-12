@@ -1,3 +1,3 @@
 #!/usr/bin/env fish
-cabal2nix . > hearts.nix
+cabal2nix . > advent.nix
 and nix-shell --run "cabal $argv"
