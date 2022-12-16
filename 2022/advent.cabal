@@ -177,7 +177,6 @@ executable 7-1
       lens
   default-language: Haskell2010
 
-
 executable 7-2
   main-is: 7-2.hs
   other-modules:
@@ -191,4 +190,17 @@ executable 7-2
       containers,
       generic-lens,
       lens
+  default-language: Haskell2010
+
+executable 8-1
+  main-is: 8-1.hs
+  other-modules:
+  ghc-options: -Wall -Werror
+               -Wincomplete-record-updates
+               -Wredundant-constraints
+               -Wunused-packages
+               -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base,
+      containers
   default-language: Haskell2010
