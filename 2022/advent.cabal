@@ -204,3 +204,16 @@ executable 8-1
       base,
       containers
   default-language: Haskell2010
+
+executable 8-2
+  main-is: 8-2.hs
+  other-modules:
+  ghc-options: -Wall -Werror
+               -Wincomplete-record-updates
+               -Wredundant-constraints
+               -Wunused-packages
+               -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base,
+      array
+  default-language: Haskell2010

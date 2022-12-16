@@ -1,4 +1,6 @@
-{ mkDerivation, base, containers, generic-lens, lens, lib, text }:
+{ mkDerivation, array, base, containers, generic-lens, lens, lib
+, text
+}:
 mkDerivation {
   pname = "advent";
   version = "1.0.0";
@@ -6,7 +8,7 @@ mkDerivation {
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [
-    base containers generic-lens lens text
+    array base containers generic-lens lens text
   ];
   description = "Advent of code 2021";
   license = lib.licenses.gpl3Plus;
