@@ -215,5 +215,5 @@ executable 8-2
                -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base,
-      array
+      containers
   default-language: Haskell2010
