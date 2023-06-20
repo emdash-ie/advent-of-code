@@ -1,7 +1,7 @@
 let
   pkgs = import <nixpkgs> { };
 in pkgs.mkShell {
-  packages = [ pkgs.haskellPackages.haskell-language-server
+  packages = [
              ];
   inputsFrom = [ (import ./release.nix).advent.env ];
 }
