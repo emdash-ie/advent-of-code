@@ -4,16 +4,25 @@
 module Main where
 
 import Data.Char (isDigit)
+import Data.Time.Clock
 
 main :: IO ()
-main = interact \input -> let
-  digits = fmap (foldr findDigits ((Nothing, Nothing), "")) (lines input)
-  numbers :: [Integer]
-  numbers = fmap (\(ds, r) -> case ds of
-                     (Just f, Just l) -> read (f : [l])
-                     _ -> error ("pattern match: ds = " <> show ds <> "; r = " <> show r)
-                 ) digits
-  in show (sum numbers)
+main = do
+  start <- getCurrentTime
+  interact \input -> let
+    digits = fmap (foldr findDigits ((Nothing, Nothing), "")) (lines input)
+    numbers :: [Integer]
+    numbers = fmap (\(ds, r) -> case ds of
+                       (Just f, Just l) -> read (f : [l])
+                       _ -> error ("pattern match: ds = " <> show ds <> "; r = " <> show r)
+                   ) digits
+    in show (sum numbers)
+  end <- getCurrentTime
+  putStrLn ""
+  putStrLn ("Start: " <> show start)
+  putStrLn ("End: " <> show end)
+  putStrLn ("Time: " <> show (diffUTCTime end start))
+
 
 type Acc = ((Maybe Char, Maybe Char), String) -- first digit, last digit, rest of string
 

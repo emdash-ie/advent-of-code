@@ -31,5 +31,5 @@ executable 1-2
                -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base,
-      text
+      time
   default-language: Haskell2010
