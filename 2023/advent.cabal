@@ -197,6 +197,21 @@ executable 7-1
       text
   default-language: Haskell2010
 
+executable 7-2
+  main-is: 7-2.hs
+  other-modules:
+  ghc-options: -Wall
+               -Wincomplete-uni-patterns
+               -Wincomplete-record-updates
+               -Wmissing-local-signatures
+               -Wredundant-constraints
+               -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base,
+      containers,
+      text
+  default-language: Haskell2010
+
 executable 8-1
   main-is: 8-1.hs
   other-modules:
