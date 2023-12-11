@@ -256,3 +256,33 @@ executable 9-2
       containers,
       text
   default-language: Haskell2010
+
+executable 11-1
+  main-is: 11-1.hs
+  other-modules:
+  ghc-options: -Wall
+               -Wincomplete-uni-patterns
+               -Wincomplete-record-updates
+               -Wmissing-local-signatures
+               -Wredundant-constraints
+               -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base,
+      containers,
+      text
+  default-language: Haskell2010
+
+executable 11-2
+  main-is: 11-2.hs
+  other-modules:
+  ghc-options: -Wall
+               -Wincomplete-uni-patterns
+               -Wincomplete-record-updates
+               -Wmissing-local-signatures
+               -Wredundant-constraints
+               -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base,
+      containers,
+      text
+  default-language: Haskell2010
