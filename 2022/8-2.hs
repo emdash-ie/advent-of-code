@@ -1,60 +1,84 @@
+{-# LANGUAGE RecordWildCards #-}
 module Main where
 
+import Data.Array
+import Data.Bool
 import Data.Char (digitToInt)
-import Data.List (foldl', transpose)
-import qualified Data.Map.Strict as Map
-import Data.Map.Strict (Map)
-import Data.Maybe (fromMaybe)
+import Data.Monoid
+
+data ViewingDistance = ViewingDistance
+  { top :: Bool
+  , right :: Bool
+  , bottom :: Bool
+  , left :: Bool
+  } deriving (Show)
+
+type Height = Int
 
 main :: IO ()
 main = interact $ \input -> let
-  rows :: [[Cell]] -- rowIndex, columnIndex, value
-  rows = zipWith (\n line ->
-                    zip3 (repeat n) [1 ..] (fmap digitToInt line))
-           [1 ..]
-           (lines input)
-  columns :: [[Cell]]
-  columns = transpose rows
-  leftVisible :: Map (Int, Int) Int
-  leftVisible = Map.unions (fmap (scenicForLine Map.empty) rows)
-  rightVisible :: Map (Int, Int) Int
-  rightVisible = Map.unions (fmap (scenicForLine Map.empty . reverse) rows)
-  topVisible :: Map (Int, Int) Int
-  topVisible = Map.unions (fmap (scenicForLine Map.empty) columns)
-  bottomVisible :: Map (Int, Int) Int
-  bottomVisible = Map.unions (fmap (scenicForLine Map.empty . reverse) columns)
-  allVisible :: Map (Int, Int) Int
-  allVisible =
-    Map.unionWith (*)
-      leftVisible
-      (Map.unionWith (*)
-        rightVisible
-        (Map.unionWith (*) bottomVisible topVisible))
-  in show (maximum (Map.elems allVisible))
 
-scenicForLine ::
-  Map (Int, Int) Int ->
-  [Cell] ->
-  Map (Int, Int) Int
-scenicForLine sm = snd . foldl' f (edgeMap, sm)
-  where
-    f ::
-      (Map Int Int, Map (Int, Int) Int) ->
-      Cell ->
-      (Map Int Int, Map (Int, Int) Int)
-    f (viewMap, scoreMap) (row, column, height) = let
-      newScoreMap = Map.insert
-        (row, column)
-        (fromMaybe (error "no key") (Map.lookup height viewMap))
-        scoreMap
-      viewUpdates = [ if n <= height
-                      then Map.insert n 1
-                      else Map.adjust (+ 1) n
-                    | n <- [0 .. 9]
-                    ]
-      in (foldr ($) viewMap viewUpdates, newScoreMap)
+  rows :: [[Height]]
+  rows = fmap (fmap digitToInt) (lines input)
 
-    edgeMap :: Map Int Int
-    edgeMap = Map.fromList [(n, 0) | n <- [0 .. 9]]
+  numRows :: Int
+  numRows = length rows
 
-type Cell = (Int, Int, Int)
+  numColumns :: Int
+  numColumns = length (rows !! 0)
+
+  heights :: Array Int (Array Int Height)
+  heights = listArray (0, numRows - 1) (fmap (listArray (0, numColumns - 1)) rows)
+
+  viewingDistance :: (Int, Int) -> ViewingDistance
+  viewingDistance (row, column) = let
+    height = heights ! row ! column
+    in ViewingDistance
+      { top = or
+        ((row == 0) :
+         fmap (\r -> top (viewingDistances ! (r, column)))
+             (takeWhile (\r -> let
+                           h' = heights ! r ! column
+                           in r >= 0 && height > h') (iterate (subtract 1) (row - 1))))
+      , right = or
+        ((column == numColumns - 1) :
+         fmap (\c -> right (viewingDistances ! (row, c)))
+            (takeWhile (\c -> (height > (heights ! row ! c)))
+             [column + 1 .. numColumns - 1]))
+      , bottom = or
+        ((row == numRows - 1) :
+         fmap (\r -> bottom (viewingDistances ! (r, column)))
+            (takeWhile (\r -> (height > (heights ! r ! column)))
+             [row + 1 .. numRows - 1]))
+      , left = or
+        ((column == 0) :
+         fmap (\c -> left (viewingDistances ! (row, c)))
+            (takeWhile (\c -> c >= 0 && height > (heights ! row ! c))
+             (iterate (subtract 1) (column - 1))))
+      }
+
+  viewingDistances :: Array (Int, Int) ViewingDistance
+  viewingDistances = listArray ((0, 0), (numRows - 1, numColumns - 1)) [ viewingDistance (row, column)
+                                                                   | (row, column) <- range ((0, 0), (numRows - 1, numColumns - 1))
+                                                                   ]
+
+  _visibleCount :: Integer
+  _visibleCount = getSum (foldMap (\ViewingDistance{..} ->
+                              if or [top, right, bottom, left]
+                              then 1
+                              else 0)
+                    viewingDistances)
+
+  viewingDistanceCounts :: [[Integer]]
+  viewingDistanceCounts = flip fmap [0 .. numRows - 1]
+      (\row -> flip fmap [0 .. numColumns - 1] (\column -> f row column))
+    where
+    f row column =
+      case viewingDistances ! (row, column) of
+        ViewingDistance{..} ->
+          sum (fmap (bool 0 1) [top, right, bottom, left])
+
+  prettyViewingDistances :: String
+  prettyViewingDistances = unlines (fmap (foldMap show) viewingDistanceCounts)
+
+  in prettyViewingDistances

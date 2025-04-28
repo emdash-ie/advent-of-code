@@ -39,7 +39,8 @@ main = interact $ \input -> let
          fmap (\r -> top (visibilities ! (r, column)))
              (takeWhile (\r -> let
                            h' = heights ! r ! column
-                           in r >= 0 && height > h') (iterate (subtract 1) (row - 1))))
+                           in r >= 0 && height > h')
+               (iterate (subtract 1) (row - 1))))
       , right = or
         ((column == numColumns - 1) :
          fmap (\c -> right (visibilities ! (row, c)))
